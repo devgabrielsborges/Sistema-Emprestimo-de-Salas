@@ -1,0 +1,3 @@
+/home/borges/CLionProjects/Sistema-Emprestimo-Salas/cmake-build-debug/CMakeFiles/Sistema_Emprestimo_Salas.dir
+/home/borges/CLionProjects/Sistema-Emprestimo-Salas/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/borges/CLionProjects/Sistema-Emprestimo-Salas/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,5 @@
+# ninja log v6
+5	574	1731374692942386120	CMakeFiles/Sistema_Emprestimo_Salas.dir/src/database.c.o	3b5d6312533abdf8
+11	368	1731374692949052907	CMakeFiles/Sistema_Emprestimo_Salas.dir/src/main.c.o	a37083c40d23e4df
+22	321	1731374769297091844	build.ninja	fc3181220d5c4020
+4	285	1731374769357092921	Sistema_Emprestimo_Salas	ff55e2095e7715cc
