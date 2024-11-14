@@ -1,0 +1,1 @@
+/usr/bin/cc -g CMakeFiles/Sistema_Emprestimo_Salas.dir/src/main.c.o CMakeFiles/Sistema_Emprestimo_Salas.dir/src/database.c.o -o Sistema_Emprestimo_Salas  /usr/lib/libsqlite3.so

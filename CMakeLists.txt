@@ -10,7 +10,8 @@ find_package(SQLite3 REQUIRED)
 include_directories(${SQLite3_INCLUDE_DIRS})
 
 add_executable(Sistema_Emprestimo_Salas
-    src/database.c
-    src/main.c)
+        src/main.c
+        src/database.c
+        src/database.h)
 
 target_link_libraries(Sistema_Emprestimo_Salas ${SQLite3_LIBRARIES})

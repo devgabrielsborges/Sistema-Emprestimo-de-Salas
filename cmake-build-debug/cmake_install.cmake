@@ -1,4 +1,4 @@
-# Install script for directory: /home/borges/CLionProjects/Sistema-Emprestimo-Salas
+# Install script for directory: /home/boreges/CLionProjects/Sistema-Emprestimo-de-Salas
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/borges/CLionProjects/Sistema-Emprestimo-Salas/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/boreges/CLionProjects/Sistema-Emprestimo-de-Salas/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

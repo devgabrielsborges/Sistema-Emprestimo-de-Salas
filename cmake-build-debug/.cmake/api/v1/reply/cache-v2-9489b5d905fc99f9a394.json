@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/borges/CLionProjects/Sistema-Emprestimo-Salas/cmake-build-debug"
+			"value" : "/home/boreges/CLionProjects/Sistema-Emprestimo-de-Salas/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -415,7 +415,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/borges/CLionProjects/Sistema-Emprestimo-Salas/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/home/boreges/CLionProjects/Sistema-Emprestimo-de-Salas/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -427,7 +427,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "Ninja"
+			"value" : "Unix Makefiles"
 		},
 		{
 			"name" : "CMAKE_GENERATOR_INSTANCE",
@@ -475,7 +475,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/borges/CLionProjects/Sistema-Emprestimo-Salas"
+			"value" : "/home/boreges/CLionProjects/Sistema-Emprestimo-de-Salas"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -522,12 +522,16 @@
 			"properties" : 
 			[
 				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
 					"name" : "HELPSTRING",
-					"value" : "No help, variable specified on the command line."
+					"value" : "Path to a program."
 				}
 			],
-			"type" : "UNINITIALIZED",
-			"value" : "/var/lib/snapd/snap/clion/296/bin/ninja/linux/x64/ninja"
+			"type" : "FILEPATH",
+			"value" : "/usr/bin/make"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -1067,7 +1071,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/borges/CLionProjects/Sistema-Emprestimo-Salas/cmake-build-debug"
+			"value" : "/home/boreges/CLionProjects/Sistema-Emprestimo-de-Salas/cmake-build-debug"
 		},
 		{
 			"name" : "Sistema_Emprestimo_Salas_IS_TOP_LEVEL",
@@ -1091,7 +1095,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/borges/CLionProjects/Sistema-Emprestimo-Salas"
+			"value" : "/home/boreges/CLionProjects/Sistema-Emprestimo-de-Salas"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",
