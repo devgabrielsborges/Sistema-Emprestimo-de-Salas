@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkWindow" id="main_window">
+    <signal name="destroy" handler="on_main_window_destroy"/>
+    <child>
+      <object class="GtkButton" id="button_login">
+        <property name="label">Login</property>
+        <signal name="clicked" handler="on_button_login_clicked"/>
+      </object>
+    </child>
+  </object>
+</interface>
+
