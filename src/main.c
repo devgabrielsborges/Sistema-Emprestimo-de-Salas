@@ -20,9 +20,28 @@
 */
 
 int main(int argc, char *argv[]) {
+    
     GtkBuilder *builder;
     GtkWidget *window;
+    
+    // Tela login
+    void on_botao_login_clicked(GtkButton *b); 
+    void on_botao_novo_usuario_clicked(GtkButton *b);
+    
+    // Tela cadastro usuarios
+    void on_botao_confirmar_clicked(GtkButton *b);
 
+    // Tela reservas e cancelamentos
+    void on_botao_reserva_salas_clicked(GtkButton *b);
+    void on_botao_cancelar_clicked(GtkButton *b);
+    
+    // Tela adicionar sala
+    void on_botao_adicionar_sala_clicked(GtkButton *b);
+
+    // Tela selecionar
+    void on_botao_novo_usuario_clicked(GtkButton *b);
+
+    
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new_from_file("interface.glade");
