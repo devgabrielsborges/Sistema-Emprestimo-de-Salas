@@ -3,21 +3,6 @@
 #include <gtk/gtk.h>
 #include "csv_operations.h"
 
-/*
-    TODO: Testar as funções de csv_operations.c
-
-    bool verificar_registro(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
-
-    int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
-
-    void apagar_reserva(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
-
-    void exibir_reservas(const char *filename);
-
-    int cadastrar_usuario(const char *filename, const char login[20], const char senha[40]);
-
-    int autenticar_usuario(const char *filename, const char login[20], const char senha[40]);
-*/
 
 int main(int argc, char *argv[]) {
     
@@ -29,22 +14,19 @@ int main(int argc, char *argv[]) {
     void on_botao_novo_usuario_clicked(GtkButton *b);
     
     // Tela cadastro usuarios
-    void on_botao_confirmar_clicked(GtkButton *b);
+    void on_botao_cadastrar_usuario_clicked(GtkButton *b);
 
     // Tela reservas e cancelamentos
-    void on_botao_reserva_salas_clicked(GtkButton *b);
-    void on_botao_cancelar_clicked(GtkButton *b);
+    void on_botao_cancelar_reserva_clicked(GtkButton *b);
+    void on_botao_inserir_reservas_clicked(GtkButton *b);
     
-    // Tela adicionar sala
-    void on_botao_adicionar_sala_clicked(GtkButton *b);
-
-    // Tela selecionar
-    void on_botao_novo_usuario_clicked(GtkButton *b);
+    void on_botao_cancelar_operacao_clicked(GtkButton *b);
+    void on_botao_reservar_clicked(GtkButton *b);
 
     
     gtk_init(&argc, &argv);
 
-    builder = gtk_builder_new_from_file("interface.glade");
+    builder = gtk_builder_new_from_file("interface_salas.glade");
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
 
     if (!window) {
@@ -60,5 +42,5 @@ int main(int argc, char *argv[]) {
 }
 
 
-// gcc -o my_program main.c `pkg-config --cflags --libs gtk+-3.0`
+// gcc -o emprestimo main.c `pkg-config --cflags --libs gtk+-3.0`
 
