@@ -119,6 +119,7 @@
                 <property name="margin-bottom">10</property>
                 <signal name="activate" handler="on_botao_novo_usuario_activate" swapped="no"/>
                 <signal name="activate" handler="on_botao_novo_usuario_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_botao_novo_usuario_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -172,6 +173,7 @@
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-bottom">10</property>
+                <property name="input-purpose">name</property>
                 <signal name="activate" handler="on_entry_inserir_nome_activate" swapped="no"/>
               </object>
               <packing>
@@ -202,6 +204,7 @@
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-bottom">10</property>
+                <property name="input-purpose">password</property>
                 <signal name="activate" handler="on_entry_inserir_senha_activate\" swapped="no"/>
               </object>
               <packing>
@@ -232,6 +235,7 @@
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-bottom">10</property>
+                <property name="input-purpose">password</property>
                 <signal name="activate" handler="on_entry_confirmar_senha_activate" swapped="no"/>
               </object>
               <packing>
@@ -261,8 +265,8 @@
             </child>
           </object>
           <packing>
-            <property name="name">page3</property>
-            <property name="title" translatable="yes">page3</property>
+            <property name="name">box_cadastro_usuario</property>
+            <property name="title" translatable="yes">Cadastro usuário</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -492,8 +496,8 @@
             </child>
           </object>
           <packing>
-            <property name="name">page7</property>
-            <property name="title" translatable="yes">page7</property>
+            <property name="name">box_tela_geral</property>
+            <property name="title" translatable="yes">Tela Geral</property>
             <property name="position">2</property>
           </packing>
         </child>

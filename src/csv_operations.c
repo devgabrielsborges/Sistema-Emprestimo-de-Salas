@@ -121,7 +121,7 @@ int cadastrar_usuario(const char *filename, const char login[20], const char sen
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Erro ao abrir o arquivo");
-        return 1;
+        return 2;
     }
 
     char linha[256];
@@ -133,7 +133,7 @@ int cadastrar_usuario(const char *filename, const char login[20], const char sen
             // Verifica se o login já existe
             if (strcmp(login, arquivo_login) == 0) {
                 fclose(file);
-                return 2; // Login já existe
+                return 1; // Login já existe
             }
         }
     }
@@ -192,3 +192,4 @@ int autenticar_usuario(const char *filename, const char *login, const char *senh
     fclose(file);
     return 1; // Usuário ou senha incorretos
 }
+
