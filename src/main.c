@@ -1,23 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <gtk/gtk.h>
 #include "csv_operations.h"
 
-/*
-    TODO: Testar as funções de csv_operations.c
 
-    bool verificar_registro(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
+GtkBuilder *builder;
+GtkWidget *window;
 
-    int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
 
-    void apagar_reserva(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
+int main(int argc, char *argv[]) {
+    gtk_init(&argc, &argv);
 
-    void exibir_reservas(const char *filename);
+    builder = gtk_builder_new_from_file("interface_salas.glade");
+    if (!builder) {
+        g_critical("Failed to create GtkBuilder");
+        return 1;
+    }
 
-    int cadastrar_usuario(const char *filename, const char login[20], const char senha[40]);
+    window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
+    if (!window) {
+        g_critical("Failed to get main window");
+        return 1;
+    }
 
-    int autenticar_usuario(const char *filename, const char login[20], const char senha[40]);
-*/
+    gtk_builder_connect_signals(builder, builder);
+    gtk_widget_show_all(window);
+    gtk_main();
 
-int main()
-{
-    printf("Hello, World!\n");
+    return 0;
 }

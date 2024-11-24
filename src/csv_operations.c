@@ -121,7 +121,7 @@ int cadastrar_usuario(const char *filename, const char login[20], const char sen
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Erro ao abrir o arquivo");
-        return 1;
+        return 2;
     }
 
     char linha[256];
@@ -133,7 +133,7 @@ int cadastrar_usuario(const char *filename, const char login[20], const char sen
             // Verifica se o login já existe
             if (strcmp(login, arquivo_login) == 0) {
                 fclose(file);
-                return 2; // Login já existe
+                return 1; // Login já existe
             }
         }
     }
@@ -152,27 +152,44 @@ int cadastrar_usuario(const char *filename, const char login[20], const char sen
     return 0; // Usuário cadastrado com sucesso
 }
 
-int autenticar_usuario(const char *filename, const char login[20], const char senha[40]) {
+int autenticar_usuario(const char *filename, const char *login, const char *senha) {
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Erro ao abrir o arquivo");
-        return 1;
+        return 2;
     }
 
     char linha[256];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_login[20], arquivo_senha[40];
-        
-        // Use sscanf para separar os campos na linha
-        if (sscanf(linha, "%19[^,],%39[^\n]", arquivo_login, arquivo_senha) == 2) {
-            // Verifica se o login e a senha correspondem
-            if (strcmp(login, arquivo_login) == 0 && strcmp(senha, arquivo_senha) == 0) {
-                fclose(file);
-                return 0; // Usuário autenticado
-            }
+        // Removendo o caractere de nova linha, se existir
+        linha[strcspn(linha, "\n")] = 0;
+
+        // Separando os campos da linha em login e senha
+        char *file_login = strtok(linha, ",");
+        char *file_senha = strtok(NULL, ",");
+
+        // Removendo espaços em branco no início e no final
+        if (file_login) {
+            while (*file_login == ' ') file_login++;
+            char *end = file_login + strlen(file_login) - 1;
+            while (end > file_login && *end == ' ') end--;
+            *(end + 1) = '\0';
+        }
+
+        if (file_senha) {
+            while (*file_senha == ' ') file_senha++;
+            char *end = file_senha + strlen(file_senha) - 1;
+            while (end > file_senha && *end == ' ') end--;
+            *(end + 1) = '\0';
+        }
+
+        if (strcmp(login, file_login) == 0 && strcmp(senha, file_senha) == 0) {
+            fclose(file);
+            return 0; // Usuário autenticado com sucesso
         }
     }
 
     fclose(file);
-    return 2; // Usuário não autenticado
+    return 1; // Usuário ou senha incorretos
 }
+
