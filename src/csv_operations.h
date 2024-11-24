@@ -13,6 +13,6 @@ void exibir_reservas(const char *filename);
 
 int cadastrar_usuario(const char *filename, const char login[20], const char senha[40]);
 
-int autenticar_usuario(const char *filename, const char login[20], const char senha[40]);
+int autenticar_usuario(const char *filename, const char *login, const char *senha);
 
 #endif // CSV_OPERATIONS_H

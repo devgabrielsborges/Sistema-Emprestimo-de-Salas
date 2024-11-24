@@ -11,7 +11,7 @@
     <property name="type-hint">splashscreen</property>
     <signal name="destroy" handler="on_main_window_destroy" swapped="no"/>
     <child>
-      <object class="GtkStack">
+      <object class="GtkStack" id="stack">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="halign">center</property>
@@ -22,7 +22,7 @@
         <property name="margin-bottom">10</property>
         <property name="transition-type">slide-up</property>
         <child>
-          <object class="GtkBox" id="login">
+          <object class="GtkBox" id="box_login">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">center</property>
@@ -50,10 +50,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entry_email">
+              <object class="GtkEntry" id="entry_login">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="placeholder-text" translatable="yes">Email</property>
+                <property name="placeholder-text" translatable="yes">Login</property>
                 <property name="input-purpose">email</property>
               </object>
               <packing>
@@ -94,8 +94,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button-login">
-                <property name="label" translatable="yes">Login</property>
+              <object class="GtkButton" id="botao_login">
+                <property name="label" translatable="yes">Fazer Login</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -133,7 +133,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="cadastro de usuario">
+          <object class="GtkBox" id="box_cadastro_usuario">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">center</property>
@@ -267,7 +267,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="tela geral">
+          <object class="GtkBox" id="box_tela_geral">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">center</property>
@@ -426,9 +426,22 @@
                 <child>
                   <object class="GtkScrolledWindow" id="reserva_scrolled_window">
                     <property name="can-focus">True</property>
+                    <child>
+                      <object class="GtkViewport">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkListBox" id="lista_reservas">
+                            <property name="visible">True</property>
+                            <property name="app-paintable">True</property>
+                            <property name="can-focus">False</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -477,17 +490,6 @@
                 <property name="position">1</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkListBox">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="name">page7</property>
@@ -496,7 +498,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="form_box">
+          <object class="GtkBox" id="box_form">
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <property name="spacing">10</property>
