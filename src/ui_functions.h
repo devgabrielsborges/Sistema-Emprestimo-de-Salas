@@ -19,4 +19,8 @@ void on_botao_inserir_reservas_clicked(GtkButton *b);
 void on_botao_cancelar_operacao_clicked(GtkButton *b);
 void on_botao_reservar_clicked(GtkButton *b);
 
+// Calendario
+void on_calendar_day_selected(GtkCalendar *calendar, gpointer user_data);
+void on_entry_data_activate(GtkEntry *entry_data, gpointer user_data);
+
 #endif // UI_FUNCTIONS_H

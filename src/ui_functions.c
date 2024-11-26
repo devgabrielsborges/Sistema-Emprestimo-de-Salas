@@ -6,12 +6,16 @@
 // TODO: Implementar função para popular lista de reservas
 // TODO: Demais botões
 
-// // Tela login
+
+
+// Tela login
 void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
     // Definindo as entradas
     GtkBuilder *builder = GTK_BUILDER(user_data);
     GtkEntry *entry_login = GTK_ENTRY(gtk_builder_get_object(builder, "entry_login"));
     GtkEntry *entry_senha = GTK_ENTRY(gtk_builder_get_object(builder, "entry_senha"));
+
+    GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(GTK_BUILDER(builder), "entry_data"));
 
     int autenticado = 1;
 
@@ -48,6 +52,10 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
 
         // TODO: Implementar função para popular lista de reservas
         // exibir_reservas("../data/reservas.csv");
+        char data_atual[20];
+        pegar_data_atual(data_atual);
+
+        gtk_entry_set_text(entry_data, data_atual);
         gtk_stack_set_visible_child_name(stack, "box_tela_geral");
     }
 }
@@ -105,5 +113,46 @@ void on_botao_cadastrar_usuario_clicked(GtkButton *b, gpointer user_data)
     if (!stack) {
         g_critical("Falha ao obter a GtkStack");
         return;
+    }
+}
+
+
+void on_calendar_day_selected(GtkCalendar *calendar, gpointer user_data)
+{
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(GTK_BUILDER(builder), "entry_data"));
+
+    guint ano, mes, dia;
+    gchar texto_data[20];
+
+    // Pegando a data selecionada no calendário
+    gtk_calendar_get_date(calendar, &ano, &mes, &dia);
+
+    // Passando data para a entry
+    g_snprintf(texto_data, sizeof(texto_data), "%02d/%02d/%04d", dia, mes + 1, ano);
+
+    // Setando a data na entry
+    gtk_entry_set_text(entry_data, texto_data);
+}
+
+
+void on_entry_data_activate(GtkEntry *entry_data, gpointer user_data)
+{
+    const gchar *texto_data = gtk_entry_get_text(entry_data);
+    guint ano, mes, dia;
+
+    // Tenta analisar a data no formato DD/MM/YYYY
+    if (sscanf(texto_data, "%02d/%02d/%04d", &dia, &mes, &ano) == 3) {
+        // Obtém o GtkCalendar do GtkBuilder (certifique-se de passar o GtkBuilder correto)
+        GtkBuilder *builder = GTK_BUILDER(user_data);
+        GtkCalendar *calendar = GTK_CALENDAR(gtk_builder_get_object(builder, "calendar"));
+        
+        if (calendar) {
+            gtk_calendar_select_day(calendar, dia);
+            gtk_calendar_select_month(calendar, mes - 1, ano);
+        } 
+    } 
+    else {
+        g_warning("Data inválida: %s", texto_data);
     }
 }

@@ -1,7 +1,19 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>
 #include "csv_operations.h"
+
+
+// TODO: Implementar array com horários
+// TODO: Verificar sobrescrita de horários
+
+const char *horarios[] = {
+    "07:10", "08:00", "08:50", "09:40", "10:50", "11:40", "12:30", 
+    "13:20", "14:30", "15:20", "16:10", "17:20", "18:10", "19:00", 
+    "19:50", "20:40", "21:30", "22:20", "23:10"
+}
+
 
 bool verificar_registro(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim) {
     FILE *file = fopen(filename, "r");
@@ -191,5 +203,12 @@ int autenticar_usuario(const char *filename, const char *login, const char *senh
 
     fclose(file);
     return 1; // Usuário ou senha incorretos
+}
+
+
+void pegar_data_atual(char *data) {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(data, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 }
 

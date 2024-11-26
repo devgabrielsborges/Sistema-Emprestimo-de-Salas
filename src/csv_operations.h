@@ -15,4 +15,6 @@ int cadastrar_usuario(const char *filename, const char login[20], const char sen
 
 int autenticar_usuario(const char *filename, const char *login, const char *senha);
 
+void pegar_data_atual(char *data);
+
 #endif // CSV_OPERATIONS_H
