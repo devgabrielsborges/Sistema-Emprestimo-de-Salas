@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include "csv_operations.h"
 
 
 GtkBuilder *builder;
@@ -8,6 +9,8 @@ GtkWidget *window;
 
 
 int main(int argc, char *argv[]) {
+    char *reservas[19];
+    
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new_from_file("interface_salas.glade");

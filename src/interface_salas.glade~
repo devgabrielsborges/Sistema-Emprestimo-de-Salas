@@ -331,6 +331,7 @@
                     </child>
                     <child>
                       <object class="GtkComboBoxText" id="bloco_combobox">
+                        <property name="name">bloco_combobox</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">10</property>
                         <property name="margin-end">10</property>
@@ -340,6 +341,10 @@
                           <item translatable="yes">A</item>
                           <item translatable="yes">B</item>
                           <item translatable="yes">C</item>
+                          <item translatable="yes">I</item>
+                          <item translatable="yes">J</item>
+                          <item translatable="yes">K</item>
+                          <item translatable="yes">LIP</item>
                         </items>
                         <signal name="changed" handler="on_bloco_combobox_changed" swapped="no"/>
                       </object>
@@ -350,6 +355,7 @@
                     </child>
                     <child>
                       <object class="GtkComboBoxText" id="sala_combobox">
+                        <property name="name">sala_combobox</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">10</property>
                         <property name="margin-end">10</property>
@@ -360,6 +366,7 @@
                           <item translatable="yes">B02</item>
                           <item translatable="yes">C03</item>
                         </items>
+                        <signal name="changed" handler="on_sala_combobox_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>

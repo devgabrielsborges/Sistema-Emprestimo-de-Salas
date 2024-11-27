@@ -1,4 +1,4 @@
-# Sistema-Emprestimo-de-Salas
+# Sistema de Empréstimo de Salas
 
 ## Descrição
 
@@ -12,26 +12,20 @@ Este projeto é um sistema de empréstimo de salas desenvolvido em C utilizando 
   - `main.c`: Arquivo principal que inicializa a aplicação GTK.
   - `interface_salas.glade`: Arquivo de interface gráfica criado com Glade.
 
-- `data/`: Contém arquivos CSV com dados de login e outras informações.
-
-- `build/`: Diretório de build gerado pelo CMake.
+- `data/`: Contém arquivos CSV com dados de login e reservas.
 
 - `README.md`: Este arquivo.
 
 ## Dependências
 
 - GTK+ 3.20 ou superior
-- CMake 3.16 ou superior
 - Compilador GCC
 
 ## Como Compilar
 
-1. Certifique-se de ter o CMake e o GTK+ instalados no seu sistema.
+1. Certifique-se de ter o GTK+ instalado no seu sistema.
 2. Navegue até o diretório do projeto.
-3. Execute os seguintes comandos:
+3. Compile o projeto usando o GCC:
 
 ```sh
-mkdir build
-cd build
-cmake ..
-make
+gcc -o Sistema-Emprestimo-de-Salas src/*.c `pkg-config --cflags --libs gtk+-3.0`
