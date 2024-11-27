@@ -2,22 +2,16 @@
 #include "ui_functions.h"
 #include "csv_operations.h"
 
-
 // TODO: Terminar função para popular lista de reservas
 // TODO: Demais botões
 
-
 void popular_lista_reservas(GtkBuilder *builder, const char *bloco, char *sala, char *data) {
-    char *reservas[19];  // array para armazenar itens da lista
-    char nome_arquivo[20];
-    
+    char *reservas[NUM_HORARIOS] = {NULL};
+    char nome_arquivo[TAM_LINHA];
 
-    pegar_nome_arquivo(nome_arquivo, bloco); // com base no bloco
-    printf("Arquivo -> '%s'\n", nome_arquivo);
+    pegar_nome_arquivo(nome_arquivo, bloco);
     carregar_reservas(nome_arquivo, reservas, sala, data);
-    // carregar_reservas("../data/B.csv", reservas, sala, data);
-    
-    // Obtendo a lista
+
     GtkListBox *lista = GTK_LIST_BOX(gtk_builder_get_object(builder, "lista_reservas"));
     if (!lista) {
         g_critical("Falha ao obter a lista");
@@ -26,20 +20,24 @@ void popular_lista_reservas(GtkBuilder *builder, const char *bloco, char *sala, 
 
     gtk_container_foreach(GTK_CONTAINER(lista), (GtkCallback)gtk_widget_destroy, NULL);
 
-    // Populando a lista
-    for (int i = 0; i < 19; i++) {
-        if (reservas[i] != NULL) {
+    // Populando a lista com verificações
+    for (int i = 0; i < NUM_HORARIOS; i++) {
+        if (reservas[i] != NULL && strlen(reservas[i]) > 0 && g_strstrip(g_strdup(reservas[i]))[0] != '\0') {
             GtkWidget *label = gtk_label_new(reservas[i]);
+
+            GtkStyleContext *context = gtk_widget_get_style_context(label);
+            gtk_style_context_add_class(context, "label-lista");
+            
             gtk_list_box_insert(lista, label, -1);
+        } else {
+            printf("Reserva inválida na posição %d\n", i);
         }
     }
 
+    gtk_widget_show_all(GTK_WIDGET(lista));
     liberar_reservas(reservas);
-    nome_arquivo[0] = '\0';
-
-
-
 }
+
 
 
 // Tela login
@@ -85,7 +83,7 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
         }
 
         
-        char data_atual[20];
+        char data_atual[TAM_DATA];
         pegar_data_atual(data_atual);
 
         gtk_entry_set_text(entry_data, data_atual);
@@ -154,7 +152,7 @@ void on_calendar_day_selected(GtkCalendar *calendar, gpointer user_data) {
     GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(GTK_BUILDER(builder), "entry_data"));
 
     guint ano, mes, dia;
-    gchar texto_data[20];
+    gchar texto_data[TAM_DATA];
 
     // Pegando a data selecionada no calendário
     gtk_calendar_get_date(calendar, &ano, &mes, &dia);
@@ -200,10 +198,10 @@ void on_entry_data_activate(GtkEntry *entry_data, gpointer user_data) {
 
 void atualizar_sala_combobox(GtkComboBoxText *sala, const char *bloco) {
     GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(sala);
-    char salas[20][6];
+    char salas[NUM_SALAS][MAX_TAM_SALA];
 
     // Obtendo as salas do bloco
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < NUM_SALAS; i++) {
         snprintf(salas[i], sizeof(salas[i]), "%s%02d", bloco, i + 1);
     }
 
@@ -211,7 +209,7 @@ void atualizar_sala_combobox(GtkComboBoxText *sala, const char *bloco) {
     gtk_combo_box_text_remove_all(sala_combobox);
 
     // Adiciona os itens
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < NUM_SALAS; i++) {
         gtk_combo_box_text_append_text(sala_combobox, salas[i]);
     }
 }

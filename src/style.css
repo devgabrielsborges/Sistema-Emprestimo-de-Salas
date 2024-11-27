@@ -1,0 +1,30 @@
+
+/* Para alterar o background do GtkListBox */
+list {
+    background-color: #f9f9f9;
+}
+
+/* Estilo ao passar o mouse sobre um item */
+list row:hover {
+    background-color: #e0e0e0;
+}
+
+/* Estilo ao selecionar um item */
+list row:selected {
+    background-color: #cccccc;
+    color: #000000;
+}
+
+/* Estilo específico para as labels da lista */
+.label-lista {
+    font-size: 14px;
+    color: #2c3e50;
+    padding: 5px;
+    background-color: #ecf0f1;
+    border-radius: 4px; /* Cantos arredondados */
+}
+
+/* Ajuste ao passar o mouse */
+.label-lista:hover {
+    background-color: #bdc3c7;
+}

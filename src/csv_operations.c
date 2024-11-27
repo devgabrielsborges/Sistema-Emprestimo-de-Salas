@@ -19,7 +19,7 @@ const char *horarios[] = {
 
 int pegar_indice_horario(const char *horario) {
     register int i = 0;
-    for (i; i < 19; i++) {
+    for (i; i < NUM_HORARIOS; i++) {
         if (strcmp(horarios[i], horario) == 0) {
             return i;
         }
@@ -43,9 +43,9 @@ bool verificar_registro(const char *filename, const char *sala, const char *data
         return false;
     }
 
-    char linha[256];
+    char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_sala[50], arquivo_data[50], arquivo_horario_inicio[50], arquivo_horario_fim[50];
+        char arquivo_sala[MAX_TAM_INFO], arquivo_data[TAM_DATA], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
         
         // Use sscanf para separar os campos na linha
         if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,\n]", arquivo_sala, arquivo_data, arquivo_horario_inicio, arquivo_horario_fim) == 4) {
@@ -97,9 +97,9 @@ void apagar_reserva(const char *filename, const char *sala, const char *data, co
         return;
     }
 
-    char linha[256];
+    char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_sala[50], arquivo_data[50], arquivo_horario_inicio[50], arquivo_horario_fim[50];
+        char arquivo_sala[MAX_TAM_INFO], arquivo_data[TAM_DATA], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
         
         // Use sscanf para separar os campos na linha
         if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,\n]", arquivo_sala, arquivo_data, arquivo_horario_inicio, arquivo_horario_fim) == 4) {
@@ -152,13 +152,13 @@ void pegar_nome_arquivo(char *nome_arquivo, const char *bloco)
     sprintf(nome_arquivo, "../data/%s.csv", bloco);
 }
 
-void carregar_reservas(const char *filename, char *reservas[19], char *sala, char *data) {
+void carregar_reservas(const char *filename, char *reservas[NUM_HORARIOS], char *sala, char *data) {
 
     int indice_horario_inicio;
     int indice_horario_fim;
 
     // Inicializando o array de reservas
-    for (int i = 0; i < 19; i++) {
+    for (int i = 0; i < NUM_HORARIOS; i++) {
         reservas[i] = NULL;
     }
 
@@ -168,9 +168,9 @@ void carregar_reservas(const char *filename, char *reservas[19], char *sala, cha
         return;
     }
 
-    char linha[256];
+    char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_data[20], arquivo_sala[20], professor[20], disciplina[30], turma[5], horario_inicio[20], horario_fim[20];
+        char arquivo_data[TAM_DATA], arquivo_sala[MAX_TAM_SALA], professor[MAX_TAM_INFO], disciplina[MAX_TAM_INFO], turma[MAX_TAM_INFO], horario_inicio[TAM_HORARIO], horario_fim[TAM_HORARIO];
         
         // Para separar os campos na linha por virgula
         if (sscanf(linha, "%19[^,],%19[^,],%19[^,],%29[^,],%4[^,],%19[^,],%19[^,\n]",
@@ -191,20 +191,20 @@ void carregar_reservas(const char *filename, char *reservas[19], char *sala, cha
                 }
 
                 for (int i = indice_horario_inicio; i < indice_horario_fim; i++) {
-                    reservas[i] = malloc(100 * sizeof(char));
+                    reservas[i] = malloc(TAM_LINHA * sizeof(char));
                     if (reservas[i] == NULL) {
                         perror("Erro ao alocar memória");
                         fclose(file);
                         return;
                     }
-                    sprintf(reservas[i], "%s - %s - %s - %s", horarios[i], professor, disciplina, turma);
+                    snprintf(reservas[i],TAM_LINHA * sizeof(reservas[i]), "%s - %s - %s - %s", horarios[i], professor, disciplina, turma);
                 }
             }
         }
     }
 
     // Percorrendo lista de reservas para preencher horarios não reservados
-    for (int i = 0; i < 19; i++) {
+    for (int i = 0; i < NUM_HORARIOS; i++) {
         if (reservas[i] == NULL) {
             reservas[i] = strdup(horarios[i]);
             if (reservas[i] == NULL) {
@@ -216,31 +216,27 @@ void carregar_reservas(const char *filename, char *reservas[19], char *sala, cha
     }
 
     fclose(file);
-
-    // Printando reservas para depuracao
-    for (int i = 0; i < 19; i++) {
-        printf("%s\n", reservas[i]);
-    }
+    
 }
 
 
-void liberar_reservas(char *reservas[19]) {
-    for (int i = 0; i < 19; i++) {
+void liberar_reservas(char *reservas[NUM_HORARIOS]) {
+    for (int i = 0; i < NUM_HORARIOS; i++) {
         if (reservas[i] != NULL) {
             free(reservas[i]);
         }
     }
 }
-int cadastrar_usuario(const char *filename, const char login[20], const char senha[40]) {
+int cadastrar_usuario(const char *filename, const char login[MAX_TAM_INFO], const char senha[MAX_TAM_INFO]) {
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Erro ao abrir o arquivo");
         return 2;
     }
 
-    char linha[256];
+    char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_login[20];
+        char arquivo_login[MAX_TAM_INFO];
         
         // Use sscanf para separar os campos na linha
         if (sscanf(linha, "%19[^,],", arquivo_login) == 1) {
@@ -274,7 +270,7 @@ int autenticar_usuario(const char *filename, const char *login, const char *senh
         return 2;
     }
 
-    char linha[256];
+    char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
         // Removendo o caractere de nova linha, se existir
         linha[strcspn(linha, "\n")] = 0;

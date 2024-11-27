@@ -1,6 +1,14 @@
 #ifndef CSV_OPERATIONS_H
 #define CSV_OPERATIONS_H
 
+#define NUM_HORARIOS 19
+#define NUM_SALAS 20
+#define TAM_DATA 20
+#define TAM_HORARIO 6
+#define TAM_LINHA 256
+#define MAX_TAM_SALA 6
+#define MAX_TAM_INFO 30
+
 #include <stdbool.h>
 
 
