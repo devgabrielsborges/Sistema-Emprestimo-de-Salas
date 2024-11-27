@@ -5,6 +5,42 @@
 // TODO: Terminar função para popular lista de reservas
 // TODO: Demais botões
 
+
+void exibir_mensagem(GtkBuilder *builder, const char *mensagem) {
+    // Obtém o GtkMessageDialog do arquivo Glade
+    GtkWidget *dialog = GTK_WIDGET(gtk_builder_get_object(builder, "message_padrao"));
+
+    if (!dialog) {
+        g_critical("Erro: Não foi possível encontrar o GtkMessageDialog no Glade.");
+        return;
+    }
+
+    // Define o texto da mensagem
+    GtkWidget *label = GTK_WIDGET(gtk_builder_get_object(builder, "label_mensagem"));
+    if (label) {
+        gtk_label_set_text(GTK_LABEL(label), mensagem);
+    } else {
+        g_critical("Erro: Não foi possível encontrar a label_mensagem no Glade.");
+    }
+
+    // Exibe a caixa de diálogo
+    gtk_widget_show(dialog);
+}
+
+void on_ok_clicked(GtkWidget *button, gpointer user_data)
+{
+
+    // Obtém o topo da hierarquia, que é o GtkDialog
+    GtkWidget *dialog = gtk_widget_get_toplevel(button);
+
+
+    if (GTK_IS_DIALOG(dialog)) {
+        gtk_dialog_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK); // Finaliza o ciclo do diálogo
+        gtk_widget_hide(dialog); // Oculta o diálogo
+    }
+}
+
+
 void popular_lista_reservas(GtkBuilder *builder, const char *bloco, char *sala, char *data) {
     char *reservas[NUM_HORARIOS] = {NULL};
     char nome_arquivo[TAM_LINHA];
@@ -106,8 +142,10 @@ void on_botao_novo_usuario_clicked(GtkButton *b, gpointer user_data) {
 
 void on_botao_cadastrar_usuario_clicked(GtkButton *b, gpointer user_data) {
         
-    // Definindo as entradas
     GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+
+     // Definindo as entradas
     GtkEntry *entry_login = GTK_ENTRY(gtk_builder_get_object(builder, "entry_inserir_nome"));
     GtkEntry *entry_senha = GTK_ENTRY(gtk_builder_get_object(builder, "entry_inserir_senha"));
     GtkEntry *entry_confirmar_senha = GTK_ENTRY(gtk_builder_get_object(builder, "entry_confirmar_senha"));
@@ -125,21 +163,27 @@ void on_botao_cadastrar_usuario_clicked(GtkButton *b, gpointer user_data) {
         if (strcmp(senha, confirmar_senha) == 0) {
             int cadastrado = cadastrar_usuario("../data/login.csv", login, senha);
             if (cadastrado == 0) {
-                g_message("Usuário cadastrado com sucesso");
-            } else if (cadastrado == 1) {
-                g_message("Usuário já cadastrado");
-            } else {
-                g_critical("Erro ao cadastrar usuário");
+                exibir_mensagem(builder, "Usuário cadastrado com sucesso");
+                gtk_stack_set_visible_child_name(stack, "box_login");  // voltar para tela de login
+
+            } 
+            else if (cadastrado == 1) {
+                exibir_mensagem(builder, "Usuário já cadastrado");
+            } 
+            else {
+                exibir_mensagem(builder, "Erro ao cadastrar usuário");
             }
-        } else {
-            g_message("As senhas não coincidem");
+        } 
+        else {
+            exibir_mensagem(builder, "Senhas não conferem");
         }
-    } else {
-        g_message("Preencha todos os campos");
+    } 
+    else {
+        exibir_mensagem(builder, "Preencha todos os campos");
+        
     }
 
 
-    GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
     if (!stack) {
         g_critical("Falha ao obter a GtkStack");
         return;
@@ -167,8 +211,8 @@ void on_calendar_day_selected(GtkCalendar *calendar, gpointer user_data) {
     GtkComboBoxText *bloco_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "bloco_combobox"));
     GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "sala_combobox"));
 
-    const char *bloco = gtk_combo_box_text_get_active_text(bloco_combobox);
-    const char *sala = gtk_combo_box_text_get_active_text(sala_combobox);
+    char *bloco = gtk_combo_box_text_get_active_text(bloco_combobox);
+    char *sala = gtk_combo_box_text_get_active_text(sala_combobox);
 
     if (bloco && sala) {
         popular_lista_reservas(builder, bloco, sala, texto_data);

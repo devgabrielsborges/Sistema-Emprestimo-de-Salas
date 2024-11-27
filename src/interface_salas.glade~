@@ -23,6 +23,7 @@
         <property name="transition-type">slide-up</property>
         <child>
           <object class="GtkBox" id="box_login">
+            <property name="name">box_login</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">center</property>
@@ -129,7 +130,7 @@
             </child>
           </object>
           <packing>
-            <property name="name">box_login</property>
+            <property name="name">view_login</property>
             <property name="title" translatable="yes">page3</property>
           </packing>
         </child>

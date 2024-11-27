@@ -4,6 +4,8 @@
 
 #include <gtk/gtk.h>
 
+void exibir_mensagem(GtkBuilder *builder, const char *mensagem);
+
 // // Tela login
 void on_botao_login_clicked(GtkButton *b, gpointer user_data);
 void on_botao_novo_usuario_clicked(GtkButton *b, gpointer user_data);
