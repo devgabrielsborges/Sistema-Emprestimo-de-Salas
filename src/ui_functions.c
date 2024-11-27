@@ -2,9 +2,6 @@
 #include "ui_functions.h"
 #include "csv_operations.h"
 
-// TODO: Terminar função para popular lista de reservas
-// TODO: Demais botões
-
 
 void exibir_mensagem(GtkBuilder *builder, const char *mensagem) {
     // Obtém o GtkMessageDialog do arquivo Glade
@@ -293,4 +290,139 @@ void on_sala_combobox_changed(GtkComboBoxText *sala_combobox, gpointer user_data
         popular_lista_reservas(builder, bloco, sala, data);
     }
     
+}
+
+// Array para armazenar os índices
+int indices_linhas[2];
+int indice_inicio, indice_fim;
+
+void on_lista_reservas_row_selected(GtkListBox *box, GtkListBoxRow *row, gpointer user_data) {
+    int index = gtk_list_box_row_get_index(row);
+    g_message("Linha selecionada: %d", index);
+
+    // Update indices_linhas based on the selected row
+    if (indices_linhas[0] == -1) {
+        indices_linhas[0] = index;
+    } else if (indices_linhas[1] == -1) {
+        indices_linhas[1] = index;
+    } else {
+        // Reset indices if both are already set
+        indices_linhas[0] = index;
+        indices_linhas[1] = -1;
+    }
+    indice_inicio = indices_linhas[0];
+    indice_fim = indices_linhas[1] + 1;
+
+    g_message("Índices atualizados: %d, %d", indices_linhas[0], indices_linhas[1]);
+}
+
+
+// verificar_registro() -> true or false
+// agendar_horario_sala() if false
+// pegar dados de comboboxes
+// pegar horario inicial e final
+// se registro nao existir -> ir pra tela de informações adicionais
+// se registro existir -> exibir mensagem -> registro ja existente
+
+void on_botao_inserir_reserva_clicked(GtkButton *b, int *indices_linhas, gpointer user_data) {
+
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkComboBoxText *bloco_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "bloco_combobox"));
+    GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "sala_combobox"));
+    GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(builder, "entry_data"));
+
+    char nome_arquivo[MAX_TAM_INFO];
+
+    const char *bloco = gtk_combo_box_text_get_active_text(bloco_combobox);
+    const char *sala = gtk_combo_box_text_get_active_text(sala_combobox);
+    const char *data = gtk_entry_get_text(entry_data);
+
+    if (!bloco || !sala || !data) {
+        exibir_mensagem(builder, "Preencha todos os campos");
+        return;
+    }
+
+    if (indices_linhas[0] == -1 || indices_linhas[1] == -1) {
+        exibir_mensagem(builder, "Selecione dois horários");
+        return;
+    }
+
+    char horario_inicio[TAM_HORARIO];
+    char horario_fim[TAM_HORARIO];
+
+    g_message("Indice inicio: %d\nIndice fim: %d", indice_inicio, indice_fim);
+    g_message("Horario inicio: %s\nHorario fim: %s", horarios[indice_inicio], horarios[indice_fim]);
+
+    snprintf(horario_inicio, sizeof(horario_inicio), "%s", horarios[indice_inicio]);
+    snprintf(horario_fim, sizeof(horario_fim), "%s", horarios[indice_fim]);
+
+    pegar_nome_arquivo(nome_arquivo, bloco);
+
+    if (verificar_registro(nome_arquivo, sala, data, horario_inicio, horario_fim)) {
+        exibir_mensagem(builder, "Registro já existe");
+    } else {
+        GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+        if (!stack) {
+            g_critical("Falha ao obter a GtkStack");
+            return;
+        }
+
+        gtk_stack_set_visible_child_name(stack, "box_form");
+    }
+}
+
+
+void on_botao_reservar_clicked(GtkButton *b, gpointer user_data){
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+    GtkComboBoxText *bloco_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "bloco_combobox"));
+    GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "sala_combobox"));
+    GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(builder, "entry_data"));
+    GtkEntry *entry_professor = GTK_ENTRY(gtk_builder_get_object(builder, "entry_professor"));
+    GtkEntry *entry_disciplina = GTK_ENTRY(gtk_builder_get_object(builder, "entry_disciplina"));
+    GtkEntry *entry_turma = GTK_ENTRY(gtk_builder_get_object(builder, "entry_turma"));
+
+    char nome_arquivo[MAX_TAM_INFO];
+
+    const char *bloco = gtk_combo_box_text_get_active_text(bloco_combobox);
+    const char *sala = gtk_combo_box_text_get_active_text(sala_combobox);
+    const char *data = gtk_entry_get_text(entry_data);
+    const char *professor = gtk_entry_get_text(entry_professor);
+    const char *disciplina = gtk_entry_get_text(entry_disciplina);
+    const char *turma = gtk_entry_get_text(entry_turma);
+
+    if (!bloco || !sala || !data || !professor || !disciplina || !turma) {
+        exibir_mensagem(builder, "Preencha todos os campos");
+        return;
+    }
+
+    char horario_inicio[TAM_HORARIO];
+    char horario_fim[TAM_HORARIO];
+
+    snprintf(horario_inicio, sizeof(horario_inicio), "%s", horarios[indice_inicio]);
+    snprintf(horario_fim, sizeof(horario_fim), "%s", horarios[indice_fim]);
+
+    pegar_nome_arquivo(nome_arquivo, bloco);
+
+    // Sala, Data, Professor, Disciplina, Turma, Horario_inicio, Horario_fim
+    if (agendar_horario_sala(nome_arquivo, sala, data, horario_inicio, horario_fim, professor, disciplina, turma) == 0) {
+        exibir_mensagem(builder, "Reserva realizada com sucesso");
+        // voltando para tela geral
+        gtk_stack_set_visible_child_name(stack, "box_tela_geral");
+        
+    } else {
+        exibir_mensagem(builder, "Erro ao reservar horário");
+    }
+}
+
+
+void on_botao_cancelar_operacao_clicked(GtkButton *b, gpointer user_data) {
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+    if (!stack) {
+        g_critical("Falha ao obter a GtkStack");
+        return;
+    }
+
+    gtk_stack_set_visible_child_name(stack, "box_tela_geral");
 }
