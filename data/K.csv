@@ -1,1 +1,8 @@
-Sala, Data, Horario_inicio, Horario_fim
+Sala, Data, Professor, Disciplina, Turma, Horario_inicio, Horario_fim
+K02,26/11/2024,RENATO,FISICA,EC,07:10,08:50
+K03,27/11/2024,RENATO,FISICA,EC,07:10,08:50
+K02,26/11/2024,Maciel,Algebra,2M,10:30,12:10
+K02,26/11/2024,Andrea,Expressao,E2,12:10,13:50
+K04,28/11/2024,Maciel,Algebra,2M,08:50,10:30
+K04,28/11/2024,Andrea,Expressao,E2,12:10,13:50
+K04,28/11/2024,RENATO,FISICA,EC,07:10,08:50

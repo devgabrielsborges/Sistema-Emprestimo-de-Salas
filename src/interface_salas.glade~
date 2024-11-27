@@ -331,6 +331,7 @@
                     </child>
                     <child>
                       <object class="GtkComboBoxText" id="bloco_combobox">
+                        <property name="name">bloco_combobox</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">10</property>
                         <property name="margin-end">10</property>
@@ -340,6 +341,10 @@
                           <item translatable="yes">A</item>
                           <item translatable="yes">B</item>
                           <item translatable="yes">C</item>
+                          <item translatable="yes">I</item>
+                          <item translatable="yes">J</item>
+                          <item translatable="yes">K</item>
+                          <item translatable="yes">LIP</item>
                         </items>
                         <signal name="changed" handler="on_bloco_combobox_changed" swapped="no"/>
                       </object>
@@ -350,16 +355,13 @@
                     </child>
                     <child>
                       <object class="GtkComboBoxText" id="sala_combobox">
+                        <property name="name">sala_combobox</property>
                         <property name="can-focus">False</property>
                         <property name="margin-start">10</property>
                         <property name="margin-end">10</property>
                         <property name="margin-top">10</property>
                         <property name="margin-bottom">10</property>
-                        <items>
-                          <item translatable="yes">A01</item>
-                          <item translatable="yes">B02</item>
-                          <item translatable="yes">C03</item>
-                        </items>
+                        <signal name="changed" handler="on_sala_combobox_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -368,6 +370,7 @@
                     </child>
                     <child>
                       <object class="GtkEntry" id="entry_data">
+                        <property name="name">entry_data</property>
                         <property name="can-focus">True</property>
                         <property name="margin-start">10</property>
                         <property name="margin-end">10</property>
@@ -375,6 +378,7 @@
                         <property name="margin-bottom">10</property>
                         <property name="text">17/11/2024</property>
                         <signal name="activate" handler="on_entry_data_activate" swapped="no"/>
+                        <signal name="changed" handler="en_entry_data_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">2</property>
@@ -383,6 +387,7 @@
                     </child>
                     <child>
                       <object class="GtkCalendar" id="calendar">
+                        <property name="name">calendar</property>
                         <property name="can-focus">True</property>
                         <property name="margin-start">10</property>
                         <property name="margin-end">10</property>
@@ -390,6 +395,7 @@
                         <property name="year">2024</property>
                         <property name="month">10</property>
                         <property name="day">22</property>
+                        <signal name="day-selected" handler="on_calendar_day_selected" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
@@ -436,6 +442,7 @@
                         <property name="can-focus">False</property>
                         <child>
                           <object class="GtkListBox" id="lista_reservas">
+                            <property name="name">lista_reservas</property>
                             <property name="visible">True</property>
                             <property name="app-paintable">True</property>
                             <property name="can-focus">False</property>
@@ -654,6 +661,68 @@
             <property name="name">page0</property>
             <property name="title" translatable="yes">page0</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMessageDialog" id="message_padrao">
+    <property name="name">message_padrao</property>
+    <property name="can-focus">False</property>
+    <property name="type-hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <child>
+              <object class="GtkButton" id="ok_cadastro_usuario_button">
+                <property name="label" translatable="yes">Ok</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">start</property>
+            <property name="valign">start</property>
+            <property name="margin-left">10</property>
+            <property name="margin-right">10</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <property name="margin-top">10</property>
+            <property name="margin-bottom">10</property>
+            <property name="label" translatable="yes">Cadastro de usuário realizado com sucesso!</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </object>

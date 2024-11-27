@@ -1,7 +1,40 @@
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>
 #include "csv_operations.h"
+
+
+// TODO: Verificar sobrescrita de horários
+// TODO: Verificar segmentation fault
+
+const char *horarios[] = {
+    "07:10", "08:00", "08:50", "09:40", "10:30", "11:20", "12:10", 
+    "13:00", "13:50", "14:40", "15:30", "16:20", "17:10", "18:00",
+    "18:50", "19:40", "20:30", "21:20", "22:10"
+};
+
+
+int pegar_indice_horario(const char *horario) {
+    register int i = 0;
+    for (i; i < 19; i++) {
+        if (strcmp(horarios[i], horario) == 0) {
+            return i;
+        }
+    }
+
+    return -1;  // Horário não encontrado
+}
+
+
+void pegar_data_atual(char *data) {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(data, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+}
+
 
 bool verificar_registro(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim) {
     FILE *file = fopen(filename, "r");
@@ -29,6 +62,7 @@ bool verificar_registro(const char *filename, const char *sala, const char *data
     return false; // Registro não encontrado
 }
 
+
 int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim) {
     if (verificar_registro(filename, sala, data, horario_inicio, horario_fim)) {
         printf("Registro já existe.\n");
@@ -47,6 +81,8 @@ int agendar_horario_sala(const char *filename, const char *sala, const char *dat
     printf("Registro adicionado com sucesso.\n");
     return 0;
 }
+
+
 void apagar_reserva(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim) {
     FILE *file = fopen(filename, "r");
     if (!file) {
@@ -93,7 +129,39 @@ void apagar_reserva(const char *filename, const char *sala, const char *data, co
     printf("Registro removido com sucesso.\n");
 }
 
-void exibir_reservas(const char *filename) {
+// Função para remover espaços em branco e novas linhas
+void trim(char *str) {
+    char *end;
+
+    // Trim espacos
+    while (isspace((unsigned char)*str)) str++;
+
+    if (*str == 0)  // All spaces?
+        return;
+
+    // Trim espacos no final
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end)) end--;
+
+    // Caracter nulo no final
+    end[1] = '\0';
+}
+
+void pegar_nome_arquivo(char *nome_arquivo, const char *bloco)
+{
+    sprintf(nome_arquivo, "../data/%s.csv", bloco);
+}
+
+void carregar_reservas(const char *filename, char *reservas[19], char *sala, char *data) {
+
+    int indice_horario_inicio;
+    int indice_horario_fim;
+
+    // Inicializando o array de reservas
+    for (int i = 0; i < 19; i++) {
+        reservas[i] = NULL;
+    }
+
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Erro ao abrir o arquivo");
@@ -102,21 +170,67 @@ void exibir_reservas(const char *filename) {
 
     char linha[256];
     while (fgets(linha, sizeof(linha), file)) {
-        char sala[50], data[50], horario_inicio[50], horario_fim[50];
+        char arquivo_data[20], arquivo_sala[20], professor[20], disciplina[30], turma[5], horario_inicio[20], horario_fim[20];
         
-        // Use sscanf para separar os campos na linha
-        if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,\n]", sala, data, horario_inicio, horario_fim) == 4) {
-            printf("Sala: %s\n", sala);
-            printf("Data: %s\n", data);
-            printf("Horário de início: %s\n", horario_inicio);
-            printf("Horário de fim: %s\n", horario_fim);
-            printf("\n");
+        // Para separar os campos na linha por virgula
+        if (sscanf(linha, "%19[^,],%19[^,],%19[^,],%29[^,],%4[^,],%19[^,],%19[^,\n]",
+                   arquivo_sala, arquivo_data, professor, disciplina, turma, horario_inicio, horario_fim) == 7) {
+            // Remover espaços em branco e novas linhas
+            trim(arquivo_sala);
+            trim(arquivo_data);
+
+
+            if (strcmp(sala, arquivo_sala) == 0 && strcmp(data, arquivo_data) == 0) {
+                indice_horario_inicio = pegar_indice_horario(horario_inicio);
+                indice_horario_fim = pegar_indice_horario(horario_fim);
+
+                // Verificar se os índices são válidos
+                if (indice_horario_inicio == -1 || indice_horario_fim == -1) {
+                    printf("Horário inválido: '%s' - '%s'\n", horario_inicio, horario_fim);
+                    continue;
+                }
+
+                for (int i = indice_horario_inicio; i < indice_horario_fim; i++) {
+                    reservas[i] = malloc(100 * sizeof(char));
+                    if (reservas[i] == NULL) {
+                        perror("Erro ao alocar memória");
+                        fclose(file);
+                        return;
+                    }
+                    sprintf(reservas[i], "%s - %s - %s - %s", horarios[i], professor, disciplina, turma);
+                }
+            }
+        }
+    }
+
+    // Percorrendo lista de reservas para preencher horarios não reservados
+    for (int i = 0; i < 19; i++) {
+        if (reservas[i] == NULL) {
+            reservas[i] = strdup(horarios[i]);
+            if (reservas[i] == NULL) {
+                perror("Erro ao alocar memória");
+                fclose(file);
+                return;
+            }
         }
     }
 
     fclose(file);
+
+    // Printando reservas para depuracao
+    for (int i = 0; i < 19; i++) {
+        printf("%s\n", reservas[i]);
+    }
 }
 
+
+void liberar_reservas(char *reservas[19]) {
+    for (int i = 0; i < 19; i++) {
+        if (reservas[i] != NULL) {
+            free(reservas[i]);
+        }
+    }
+}
 int cadastrar_usuario(const char *filename, const char login[20], const char senha[40]) {
     FILE *file = fopen(filename, "r");
     if (!file) {
@@ -151,6 +265,7 @@ int cadastrar_usuario(const char *filename, const char login[20], const char sen
 
     return 0; // Usuário cadastrado com sucesso
 }
+
 
 int autenticar_usuario(const char *filename, const char *login, const char *senha) {
     FILE *file = fopen(filename, "r");
