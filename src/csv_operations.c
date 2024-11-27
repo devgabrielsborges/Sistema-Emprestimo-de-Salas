@@ -8,6 +8,7 @@
 
 
 // TODO: Verificar sobrescrita de horários
+// TODO: Verificar segmentation fault
 
 const char *horarios[] = {
     "07:10", "08:00", "08:50", "09:40", "10:30", "11:20", "12:10", 
@@ -34,12 +35,6 @@ void pegar_data_atual(char *data) {
     sprintf(data, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 }
 
-
-
-void popular_array_horarios(char *horarios[19])
-{
-
-}
 
 bool verificar_registro(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim) {
     FILE *file = fopen(filename, "r");
@@ -184,12 +179,8 @@ void carregar_reservas(const char *filename, char *reservas[19], char *sala, cha
             trim(arquivo_sala);
             trim(arquivo_data);
 
-            // Adicionar mensagens de depuração
-            printf("Comparando sala: '%s' com '%s'\n\n", sala, arquivo_sala);
-            printf("Comparando data: '%s' com '%s'\n\n", data, arquivo_data);
 
             if (strcmp(sala, arquivo_sala) == 0 && strcmp(data, arquivo_data) == 0) {
-                printf("iguais\n\n");
                 indice_horario_inicio = pegar_indice_horario(horario_inicio);
                 indice_horario_fim = pegar_indice_horario(horario_fim);
 
@@ -199,7 +190,6 @@ void carregar_reservas(const char *filename, char *reservas[19], char *sala, cha
                     continue;
                 }
 
-                printf("Inserindo reserva: %s - %s - %s - %s\n", professor, disciplina, turma, horario_inicio);
                 for (int i = indice_horario_inicio; i < indice_horario_fim; i++) {
                     reservas[i] = malloc(100 * sizeof(char));
                     if (reservas[i] == NULL) {

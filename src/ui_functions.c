@@ -7,12 +7,15 @@
 // TODO: Demais botões
 
 
-void popular_lista_reservas(GtkBuilder *builder, const char *bloco, const char *sala, const char *data) {
+void popular_lista_reservas(GtkBuilder *builder, const char *bloco, char *sala, char *data) {
     char *reservas[19];  // array para armazenar itens da lista
     char nome_arquivo[20];
+    
 
-    pegar_nome_arquivo(nome_arquivo, bloco);  // com base no bloco
+    pegar_nome_arquivo(nome_arquivo, bloco); // com base no bloco
+    printf("Arquivo -> '%s'\n", nome_arquivo);
     carregar_reservas(nome_arquivo, reservas, sala, data);
+    // carregar_reservas("../data/B.csv", reservas, sala, data);
     
     // Obtendo a lista
     GtkListBox *lista = GTK_LIST_BOX(gtk_builder_get_object(builder, "lista_reservas"));
@@ -20,6 +23,8 @@ void popular_lista_reservas(GtkBuilder *builder, const char *bloco, const char *
         g_critical("Falha ao obter a lista");
         return;
     }
+
+    gtk_container_foreach(GTK_CONTAINER(lista), (GtkCallback)gtk_widget_destroy, NULL);
 
     // Populando a lista
     for (int i = 0; i < 19; i++) {
@@ -29,8 +34,8 @@ void popular_lista_reservas(GtkBuilder *builder, const char *bloco, const char *
         }
     }
 
-    // Limpando a lista
-    gtk_container_foreach(GTK_CONTAINER(lista), (GtkCallback)gtk_widget_destroy, NULL);
+    liberar_reservas(reservas);
+    nome_arquivo[0] = '\0';
 
 
 
@@ -159,6 +164,17 @@ void on_calendar_day_selected(GtkCalendar *calendar, gpointer user_data) {
 
     // Setando a data na entry
     gtk_entry_set_text(entry_data, texto_data);
+
+    // Atualizando a lista de reservas - se houver bloco e sala selecionados
+    GtkComboBoxText *bloco_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "bloco_combobox"));
+    GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "sala_combobox"));
+
+    const char *bloco = gtk_combo_box_text_get_active_text(bloco_combobox);
+    const char *sala = gtk_combo_box_text_get_active_text(sala_combobox);
+
+    if (bloco && sala) {
+        popular_lista_reservas(builder, bloco, sala, texto_data);
+    }
 }
 
 
@@ -182,8 +198,8 @@ void on_entry_data_activate(GtkEntry *entry_data, gpointer user_data) {
     }
 }
 
-void atualizar_combobox_sala(GtkComboBoxText *sala, const char *bloco) {
-    GtkComboBoxText *combobox_sala_texto = GTK_COMBO_BOX_TEXT(sala);
+void atualizar_sala_combobox(GtkComboBoxText *sala, const char *bloco) {
+    GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(sala);
     char salas[20][6];
 
     // Obtendo as salas do bloco
@@ -192,38 +208,47 @@ void atualizar_combobox_sala(GtkComboBoxText *sala, const char *bloco) {
     }
 
     // Limpa o combobox
-    gtk_combo_box_text_remove_all(combobox_sala_texto);
+    gtk_combo_box_text_remove_all(sala_combobox);
 
     // Adiciona os itens
     for (int i = 0; i < 20; i++) {
-        gtk_combo_box_text_append_text(combobox_sala_texto, salas[i]);
+        gtk_combo_box_text_append_text(sala_combobox, salas[i]);
     }
 }
 
 
-void on_bloco_combobox_changed(GtkComboBox *combobox_bloco, gpointer user_data) {
+void on_bloco_combobox_changed(GtkComboBox *bloco_combobox, gpointer user_data) {
     GtkBuilder *builder = GTK_BUILDER(user_data);
-    GtkComboBoxText *combobox_sala = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "combobox_sala"));
+    GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "sala_combobox"));
 
     // Obtendo o bloco selecionado
-    const char *bloco = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combobox_bloco));
+    const char *bloco = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(bloco_combobox));
+
+    // Limpar itens do combobox
+    gtk_combo_box_text_remove_all(sala_combobox);
 
      // Atualiza os itens de combo2 com base no item selecionado em combo1
-    atualizar_combobox_sala(combobox_sala, bloco);
+    atualizar_sala_combobox(sala_combobox, bloco);
 
 
 }
 
 
-void on_sala_combobox_changed(GtkComboBox *combobox_sala, gpointer user_data) {
+void on_sala_combobox_changed(GtkComboBoxText *sala_combobox, gpointer user_data) {
     GtkBuilder *builder = GTK_BUILDER(user_data);
-    GtkComboBoxText *combobox_bloco = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "combobox_bloco"));
+    GtkComboBoxText *bloco_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "bloco_combobox"));
 
-    // Texto do combobox_sala
-    const gchar *sala = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combobox_sala));
+    // Texto do bloco
+    char *bloco = gtk_combo_box_text_get_active_text(bloco_combobox);
+
+    // Texto do sala_combobox
+    char *sala = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(sala_combobox));
 
     // Texto da entry_data
-    const gchar *data = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(builder, "entry_data")));
-
-    popular_lista_reservas(builder, "listbox_reservas", sala, data);
+    char *data = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(builder, "entry_data")));
+    
+    if (sala && bloco && data) {
+        popular_lista_reservas(builder, bloco, sala, data);
+    }
+    
 }

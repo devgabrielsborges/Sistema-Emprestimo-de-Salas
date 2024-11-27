@@ -20,6 +20,8 @@ void trim(char *str);
 
 void carregar_reservas(const char *filename, char *reservas[19], char *sala, char *data);
 
+void liberar_reservas(char *reservas[19]); 
+
 int cadastrar_usuario(const char *filename, const char login[20], const char senha[40]);
 
 int autenticar_usuario(const char *filename, const char *login, const char *senha);

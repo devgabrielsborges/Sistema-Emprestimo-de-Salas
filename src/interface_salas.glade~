@@ -361,11 +361,6 @@
                         <property name="margin-end">10</property>
                         <property name="margin-top">10</property>
                         <property name="margin-bottom">10</property>
-                        <items>
-                          <item translatable="yes">A01</item>
-                          <item translatable="yes">B02</item>
-                          <item translatable="yes">C03</item>
-                        </items>
                         <signal name="changed" handler="on_sala_combobox_changed" swapped="no"/>
                       </object>
                       <packing>
