@@ -11,6 +11,17 @@
 
 #include <stdbool.h>
 
+extern char *horarios[];
+
+typedef struct Registro_aula{
+    char sala[MAX_TAM_SALA];
+    char data[TAM_DATA];
+    char professor[MAX_TAM_INFO];
+    char disciplina[MAX_TAM_INFO];
+    char turma[MAX_TAM_INFO];
+    char horario_inicio[TAM_HORARIO];
+    char horario_fim[TAM_HORARIO];
+} registro_aula;
 
 void pegar_data_atual(char *data);
 
@@ -18,7 +29,7 @@ int pegar_indice_horario(const char *horario);
 
 bool verificar_registro(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
 
-int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
+int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim, const char *professor, const char *disciplina, const char *turma);
 
 void apagar_reserva(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim);
 

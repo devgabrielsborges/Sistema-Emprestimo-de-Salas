@@ -8,9 +8,8 @@
 
 
 // TODO: Verificar sobrescrita de horários
-// TODO: Verificar segmentation fault
 
-const char *horarios[] = {
+char *horarios[] = {
     "07:10", "08:00", "08:50", "09:40", "10:30", "11:20", "12:10", 
     "13:00", "13:50", "14:40", "15:30", "16:20", "17:10", "18:00",
     "18:50", "19:40", "20:30", "21:20", "22:10"
@@ -45,7 +44,7 @@ bool verificar_registro(const char *filename, const char *sala, const char *data
 
     char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_sala[MAX_TAM_INFO], arquivo_data[TAM_DATA], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
+        char arquivo_sala[MAX_TAM_SALA], arquivo_data[TAM_DATA], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
         
         // Use sscanf para separar os campos na linha
         if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,\n]", arquivo_sala, arquivo_data, arquivo_horario_inicio, arquivo_horario_fim) == 4) {
@@ -53,20 +52,19 @@ bool verificar_registro(const char *filename, const char *sala, const char *data
             if (strcmp(sala, arquivo_sala) == 0 && strcmp(data, arquivo_data) == 0 &&
                 strcmp(horario_inicio, arquivo_horario_inicio) == 0 && strcmp(horario_fim, arquivo_horario_fim) == 0) {
                 fclose(file);
-                return true; // Registro encontrado
+                return true; // Registro já existe
             }
         }
     }
 
     fclose(file);
-    return false; // Registro não encontrado
+    return false; // Registro não existe
 }
 
-
-int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim) {
+// Sala, Data, Professor, Disciplina, Turma, Horario_inicio, Horario_fim
+int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim, const char *professor, const char *disciplina, const char *turma) {
     if (verificar_registro(filename, sala, data, horario_inicio, horario_fim)) {
-        printf("Registro já existe.\n");
-        return 1;
+        return 1; // Registro já existe
     }
 
     FILE *file = fopen(filename, "a");
@@ -75,13 +73,11 @@ int agendar_horario_sala(const char *filename, const char *sala, const char *dat
         return 2;
     }
 
-    fprintf(file, "%s,%s,%s,%s\n", sala, data, horario_inicio, horario_fim);
+    fprintf(file, "%s,%s,%s,%s,%s,%s,%s\n", sala, data, professor, disciplina, turma, horario_inicio, horario_fim);
     fclose(file);
 
-    printf("Registro adicionado com sucesso.\n");
-    return 0;
+    return 0; // Registro realizado com sucesso
 }
-
 
 void apagar_reserva(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim) {
     FILE *file = fopen(filename, "r");
