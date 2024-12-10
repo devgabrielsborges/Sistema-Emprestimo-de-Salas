@@ -201,6 +201,8 @@
               <object class="GtkEntry" id="entry_inserir_senha">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="visibility">False</property>
+                <property name="invisible-char">*</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-bottom">10</property>
@@ -232,6 +234,8 @@
               <object class="GtkEntry" id="entry_confirmar_senha">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="visibility">False</property>
+                <property name="invisible-char">*</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-bottom">10</property>
@@ -478,7 +482,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="botao_inserir_reserva">
-                        <property name="label">Inserir reserva</property>
+                        <property name="label">Inserir/Editar reserva</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">False</property>
                         <signal name="clicked" handler="on_botao_inserir_reserva_clicked" swapped="no"/>
@@ -525,7 +529,7 @@
                   <object class="GtkLabel" id="label_professor">
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label">Professor*:</property>
+                    <property name="label">Professor/Responsável*:</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -536,7 +540,7 @@
                 <child>
                   <object class="GtkEntry" id="entry_professor">
                     <property name="can-focus">True</property>
-                    <property name="placeholder-text">Digite o nome do professor</property>
+                    <property name="placeholder-text">Digite o nome do responsável</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

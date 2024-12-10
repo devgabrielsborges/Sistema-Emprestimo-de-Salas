@@ -7,8 +7,6 @@
 #include "csv_operations.h"
 
 
-// TODO: Verificar sobrescrita de horários
-
 char *horarios[] = {
     "07:10", "08:00", "08:50", "09:40", "10:30", "11:20", "12:10", 
     "13:00", "13:50", "14:40", "15:30", "16:20", "17:10", "18:00",
@@ -44,13 +42,19 @@ bool verificar_registro(const char *filename, const char *sala, const char *data
 
     char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_sala[MAX_TAM_SALA], arquivo_data[TAM_DATA], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
+        char arquivo_sala[MAX_TAM_SALA], arquivo_data[TAM_DATA], arquivo_professor[MAX_TAM_INFO], arquivo_disciplina[MAX_TAM_INFO], arquivo_turma[MAX_TAM_INFO], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
         
-        // Use sscanf para separar os campos na linha
-        if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,\n]", arquivo_sala, arquivo_data, arquivo_horario_inicio, arquivo_horario_fim) == 4) {
-            // Verifica se todos os campos correspondem
+        // sscanf para separar os campos na linha
+        if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,\n]", arquivo_sala, arquivo_data, arquivo_professor, arquivo_disciplina, arquivo_turma, arquivo_horario_inicio, arquivo_horario_fim) == 7) {
+            // verifica se todos os campos correspondem
+            // verificando pelo indice dos horarios
+            int indice_inicio_arquivo = pegar_indice_horario(arquivo_horario_inicio);
+            int indice_fim_arquivo = pegar_indice_horario(arquivo_horario_fim);
+            int indice_inicio = pegar_indice_horario(horario_inicio);
+            int indice_fim = pegar_indice_horario(horario_fim);
+
             if (strcmp(sala, arquivo_sala) == 0 && strcmp(data, arquivo_data) == 0 &&
-                strcmp(horario_inicio, arquivo_horario_inicio) == 0 && strcmp(horario_fim, arquivo_horario_fim) == 0) {
+                indice_inicio >= indice_inicio_arquivo && indice_fim == indice_fim_arquivo) {
                 fclose(file);
                 return true; // Registro já existe
             }
@@ -63,10 +67,6 @@ bool verificar_registro(const char *filename, const char *sala, const char *data
 
 // Sala, Data, Professor, Disciplina, Turma, Horario_inicio, Horario_fim
 int agendar_horario_sala(const char *filename, const char *sala, const char *data, const char *horario_inicio, const char *horario_fim, const char *professor, const char *disciplina, const char *turma) {
-    if (verificar_registro(filename, sala, data, horario_inicio, horario_fim)) {
-        return 1; // Registro já existe
-    }
-
     FILE *file = fopen(filename, "a");
     if (!file) {
         perror("Erro ao abrir o arquivo");
@@ -93,15 +93,24 @@ void apagar_reserva(const char *filename, const char *sala, const char *data, co
         return;
     }
 
+    char arquivo_sala[MAX_TAM_SALA], arquivo_data[TAM_DATA], arquivo_professor[MAX_TAM_INFO], arquivo_disciplina[MAX_TAM_INFO], arquivo_turma[MAX_TAM_INFO], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
+
+    int indice_inicio_arquivo;
+    int indice_fim_arquivo;
+    int indice_inicio = pegar_indice_horario(horario_inicio);
+    int indice_fim = pegar_indice_horario(horario_fim);
+
     char linha[TAM_LINHA];
     while (fgets(linha, sizeof(linha), file)) {
-        char arquivo_sala[MAX_TAM_INFO], arquivo_data[TAM_DATA], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
+        indice_inicio_arquivo = pegar_indice_horario(arquivo_horario_inicio);
+        indice_fim_arquivo = pegar_indice_horario(arquivo_horario_fim) - 1;
         
         // Use sscanf para separar os campos na linha
-        if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,\n]", arquivo_sala, arquivo_data, arquivo_horario_inicio, arquivo_horario_fim) == 4) {
+        if (sscanf(linha, "%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,],%49[^,\n]", arquivo_sala, arquivo_data, arquivo_professor, arquivo_disciplina, arquivo_turma, arquivo_horario_inicio, arquivo_horario_fim) == 7) {
             // Verifica se todos os campos correspondem
             if (strcmp(sala, arquivo_sala) == 0 && strcmp(data, arquivo_data) == 0 &&
                 strcmp(horario_inicio, arquivo_horario_inicio) == 0 && strcmp(horario_fim, arquivo_horario_fim) == 0) {
+                printf("Registro encontrado e removido.\n");
                 continue; // Ignora a linha
             }
         }

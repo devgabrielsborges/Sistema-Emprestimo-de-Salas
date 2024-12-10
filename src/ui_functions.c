@@ -81,6 +81,7 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
     GtkEntry *entry_senha = GTK_ENTRY(gtk_builder_get_object(builder, "entry_senha"));
 
     GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(GTK_BUILDER(builder), "entry_data"));
+    GtkCalendar *calendar = GTK_CALENDAR(gtk_builder_get_object(GTK_BUILDER(builder), "calendar"));
 
     int autenticado = 1;
 
@@ -97,14 +98,14 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
         autenticado = autenticar_usuario("../data/login.csv", login, senha);
         printf("Autenticado: %d\n", autenticado);
         if (autenticado == 0) {
-            g_message("Usuário autenticado com sucesso");
+            exibir_mensagem(builder, "Usuário autenticado com sucesso");
         } else if (autenticado == 1) {
-            g_message("Usuário ou senha incorretos");
+            exibir_mensagem(builder, "Usuário ou senha incorretos");
         } else {
-            g_critical("Erro ao autenticar usuário");
+            exibir_mensagem(builder, "Erro ao autenticar usuário");
         }
     } else {
-        g_message("Preencha todos os campos");
+        exibir_mensagem(builder, "Preencha todos os campos");
     }
 
     if (autenticado == 0) {
@@ -119,7 +120,15 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
         char data_atual[TAM_DATA];
         pegar_data_atual(data_atual);
 
+         // Setando a data atual na entry
         gtk_entry_set_text(entry_data, data_atual);
+        
+        // Setando a data atual no calendário
+        guint dia, mes, ano;
+        sscanf(data_atual, "%02d/%02d/%04d", &dia, &mes, &ano);
+        gtk_calendar_select_day(calendar, dia);
+        gtk_calendar_select_month(calendar, mes - 1, ano);
+
         gtk_stack_set_visible_child_name(stack, "box_tela_geral");
     }
 }
@@ -317,13 +326,6 @@ void on_lista_reservas_row_selected(GtkListBox *box, GtkListBoxRow *row, gpointe
 }
 
 
-// verificar_registro() -> true or false
-// agendar_horario_sala() if false
-// pegar dados de comboboxes
-// pegar horario inicial e final
-// se registro nao existir -> ir pra tela de informações adicionais
-// se registro existir -> exibir mensagem -> registro ja existente
-
 void on_botao_inserir_reserva_clicked(GtkButton *b, int *indices_linhas, gpointer user_data) {
 
     GtkBuilder *builder = GTK_BUILDER(user_data);
@@ -359,18 +361,60 @@ void on_botao_inserir_reserva_clicked(GtkButton *b, int *indices_linhas, gpointe
     pegar_nome_arquivo(nome_arquivo, bloco);
 
     if (verificar_registro(nome_arquivo, sala, data, horario_inicio, horario_fim)) {
-        exibir_mensagem(builder, "Registro já existe");
-    } else {
-        GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
-        if (!stack) {
-            g_critical("Falha ao obter a GtkStack");
-            return;
-        }
-
-        gtk_stack_set_visible_child_name(stack, "box_form");
+        exibir_mensagem(builder, "Você está editando uma reserva existente");
     }
+
+    GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+    if (!stack) {
+        g_critical("Falha ao obter a GtkStack");
+        return;
+    }
+
+    gtk_stack_set_visible_child_name(stack, "box_form");
 }
 
+
+void on_botao_cancelar_reserva_clicked(GtkButton *b,int *indices_linhas, gpointer user_data) {
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+    
+    // Pegando bloco, sala, data, horario_inicio, horario_fim
+    GtkComboBoxText *bloco_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "bloco_combobox"));
+    GtkComboBoxText *sala_combobox = GTK_COMBO_BOX_TEXT(gtk_builder_get_object(builder, "sala_combobox"));
+    GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(builder, "entry_data"));
+
+    char nome_arquivo[MAX_TAM_INFO];
+
+    const char *bloco = gtk_combo_box_text_get_active_text(bloco_combobox);
+    const char *sala = gtk_combo_box_text_get_active_text(sala_combobox);
+    const char *data = gtk_entry_get_text(entry_data);
+
+    if (!bloco || !sala || !data) {
+        exibir_mensagem(builder, "Preencha todos os campos");
+        return;
+    }
+
+    if (indices_linhas[0] == -1 || indices_linhas[1] == -1) {
+        exibir_mensagem(builder, "Selecione dois horários");
+        return;
+    }
+
+    char horario_inicio[TAM_HORARIO];
+    char horario_fim[TAM_HORARIO];
+
+    snprintf(horario_inicio, sizeof(horario_inicio), "%s", horarios[indice_inicio]);
+    snprintf(horario_fim, sizeof(horario_fim), "%s", horarios[indice_fim]);
+
+    pegar_nome_arquivo(nome_arquivo, bloco);
+
+    if (verificar_registro(nome_arquivo, sala, data, horario_inicio, horario_fim)) {
+        apagar_reserva(nome_arquivo, sala, data, horario_inicio, horario_fim);
+        exibir_mensagem(builder, "Reserva cancelada com sucesso");
+        popular_lista_reservas(builder, bloco, sala, data);
+    } else {
+        exibir_mensagem(builder, "Registro não encontrado");
+    }
+}
 
 void on_botao_reservar_clicked(GtkButton *b, gpointer user_data){
     GtkBuilder *builder = GTK_BUILDER(user_data);

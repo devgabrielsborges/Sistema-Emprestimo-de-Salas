@@ -14,8 +14,8 @@ void on_botao_novo_usuario_clicked(GtkButton *b, gpointer user_data);
 void on_botao_cadastrar_usuario_clicked(GtkButton *b, gpointer user_data);
 
 // Tela reservas e cancelamentos
-void on_botao_cancelar_reserva_clicked(GtkButton *b);
-void on_botao_inserir_reservas_clicked(GtkButton *b);
+void on_botao_cancelar_reserva_clicked(GtkButton *b, int *indices_linhas, gpointer user_data);
+void on_botao_inserir_reservas_clicked(GtkButton *b, int *indices_linhas, gpointer user_data);
 
 // Tela informacoes para reserva
 void on_botao_reservar_clicked(GtkButton *b, gpointer user_data);
