@@ -3,6 +3,8 @@
 #include "csv_operations.h"
 
 
+int autenticado = 0;
+
 void exibir_mensagem(GtkBuilder *builder, const char *mensagem) {
     // Obtém o GtkMessageDialog do arquivo Glade
     GtkWidget *dialog = GTK_WIDGET(gtk_builder_get_object(builder, "message_padrao"));
@@ -35,6 +37,16 @@ void on_ok_clicked(GtkWidget *button, gpointer user_data)
         gtk_dialog_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK); // Finaliza o ciclo do diálogo
         gtk_widget_hide(dialog); // Oculta o diálogo
     }
+}
+
+void on_botao_voltar_clicked(GtkWidget *button, gpointer user_data) {
+    // Obtém o GtkStack do GtkBuilder
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkStack *stack = GTK_STACK(gtk_builder_get_object(builder, "stack"));
+
+
+    gtk_stack_set_visible_child_name(stack, "box_login");
+    autenticado = 0;
 }
 
 
@@ -83,7 +95,6 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
     GtkEntry *entry_data = GTK_ENTRY(gtk_builder_get_object(GTK_BUILDER(builder), "entry_data"));
     GtkCalendar *calendar = GTK_CALENDAR(gtk_builder_get_object(GTK_BUILDER(builder), "calendar"));
 
-    int autenticado = 1;
 
     if (!entry_login || !entry_senha) {
         g_critical("Falha ao obter as entradas");
@@ -293,10 +304,10 @@ void on_sala_combobox_changed(GtkComboBoxText *sala_combobox, gpointer user_data
     char *sala = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(sala_combobox));
 
     // Texto da entry_data
-    char *data = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(builder, "entry_data")));
+    const char *data = gtk_entry_get_text(GTK_ENTRY(gtk_builder_get_object(builder, "entry_data")));
     
     if (sala && bloco && data) {
-        popular_lista_reservas(builder, bloco, sala, data);
+        popular_lista_reservas(builder, bloco, sala,(char*) data);
     }
     
 }
@@ -410,7 +421,7 @@ void on_botao_cancelar_reserva_clicked(GtkButton *b,int *indices_linhas, gpointe
     if (verificar_registro(nome_arquivo, sala, data, horario_inicio, horario_fim)) {
         apagar_reserva(nome_arquivo, sala, data, horario_inicio, horario_fim);
         exibir_mensagem(builder, "Reserva cancelada com sucesso");
-        popular_lista_reservas(builder, bloco, sala, data);
+        popular_lista_reservas(builder, bloco,(char*) sala,(char*) data);
     } else {
         exibir_mensagem(builder, "Registro não encontrado");
     }
