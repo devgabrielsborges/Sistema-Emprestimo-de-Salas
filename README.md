@@ -10,7 +10,7 @@ Este projeto é um sistema de empréstimo de salas desenvolvido em C utilizando 
   - `csv_operations.c` e `csv_operations.h`: Funções para operações com arquivos CSV.
   - `ui_functions.c` e `ui_functions.h`: Funções para manipulação da interface gráfica.
   - `main.c`: Arquivo principal que inicializa a aplicação GTK.
-  - `interface_salas.glade`: Arquivo de interface gráfica criado com Glade.
+  - `interface.glade`: Arquivo de interface gráfica criado com Glade.
 
 - `data/`: Contém arquivos CSV com dados de login e reservas.
 
@@ -28,4 +28,4 @@ Este projeto é um sistema de empréstimo de salas desenvolvido em C utilizando 
 3. Compile o projeto usando o GCC:
 
 ```sh
-gcc -o Sistema-Emprestimo-de-Salas src/*.c `pkg-config --cflags --libs gtk+-3.0`
+cd src && gcc -o Sistema-Emprestimo-de-Salas *.c `pkg-config --cflags --libs gtk+-3.0`
