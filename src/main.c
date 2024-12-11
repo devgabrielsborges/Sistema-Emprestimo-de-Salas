@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     
     gtk_init(&argc, &argv);
 
-    builder = gtk_builder_new_from_file("interface_salas2.glade");
+    builder = gtk_builder_new_from_file("interface.glade");
 
     window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
     if (!window) {
