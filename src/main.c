@@ -35,6 +35,21 @@ int main(int argc, char *argv[]) {
         GTK_STYLE_PROVIDER_PRIORITY_USER
     );
 
+    printf("Lembrar login: %d\n", lembrar_login_cond("../data/.lembrar_login.txt"));
+    if ((lembrar_login_cond("../data/.lembrar_login.txt") == 1)) {
+        char login[MAX_TAM_INFO], senha[MAX_TAM_INFO];
+        ler_ultimo_login("../data/.ultimo_login.txt", login, senha);
+
+        GtkEntry *entry_login = GTK_ENTRY(gtk_builder_get_object(builder, "entry_login"));
+        GtkEntry *entry_senha = GTK_ENTRY(gtk_builder_get_object(builder, "entry_senha"));
+
+        if (strlen(login) > 0 && strlen(senha) > 0) {
+            gtk_entry_set_text(entry_login, login);
+            gtk_entry_set_text(entry_senha, senha);
+        }
+    }
+
+
     gtk_builder_connect_signals(builder, builder);
     gtk_widget_show_all(window);
     gtk_main();

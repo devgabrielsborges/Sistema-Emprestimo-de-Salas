@@ -16,6 +16,7 @@ char *horarios[] = {
 
 int pegar_indice_horario(const char *horario) {
     register int i = 0;
+
     for (i; i < NUM_HORARIOS; i++) {
         if (strcmp(horarios[i], horario) == 0) {
             return i;
@@ -41,6 +42,7 @@ bool verificar_registro(const char *filename, const char *sala, const char *data
     }
 
     char linha[TAM_LINHA];
+    
     while (fgets(linha, sizeof(linha), file)) {
         char arquivo_sala[MAX_TAM_SALA], arquivo_data[TAM_DATA], arquivo_professor[MAX_TAM_INFO], arquivo_disciplina[MAX_TAM_INFO], arquivo_turma[MAX_TAM_INFO], arquivo_horario_inicio[TAM_HORARIO], arquivo_horario_fim[TAM_HORARIO];
         
@@ -110,7 +112,6 @@ void apagar_reserva(const char *filename, const char *sala, const char *data, co
             // Verifica se todos os campos correspondem
             if (strcmp(sala, arquivo_sala) == 0 && strcmp(data, arquivo_data) == 0 &&
                 strcmp(horario_inicio, arquivo_horario_inicio) == 0 && strcmp(horario_fim, arquivo_horario_fim) == 0) {
-                printf("Registro encontrado e removido.\n");
                 continue; // Ignora a linha
             }
         }
@@ -131,7 +132,6 @@ void apagar_reserva(const char *filename, const char *sala, const char *data, co
         return;
     }
 
-    printf("Registro removido com sucesso.\n");
 }
 
 // Função para remover espaços em branco e novas linhas
@@ -191,7 +191,6 @@ void carregar_reservas(const char *filename, char *reservas[NUM_HORARIOS], char 
 
                 // Verificar se os índices são válidos
                 if (indice_horario_inicio == -1 || indice_horario_fim == -1) {
-                    printf("Horário inválido: '%s' - '%s'\n", horario_inicio, horario_fim);
                     continue;
                 }
 
@@ -309,3 +308,80 @@ int autenticar_usuario(const char *filename, const char *login, const char *senh
     return 1; // Usuário ou senha incorretos
 }
 
+void escrever_ultimo_login(const char *filename, const char *login, const char *senha)
+{
+    FILE *file = fopen(filename, "w");
+    if (!file) {
+        perror("Erro ao abrir o arquivo");
+        return;
+    }
+
+    fprintf(file, "%s,%s\n", login, senha);
+    fclose(file);
+}
+
+void ler_ultimo_login(const char *filename, char *login, char *senha)
+{
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Erro ao abrir o arquivo");
+        return;
+    }
+
+    char linha[TAM_LINHA];
+
+    if (fgets(linha, sizeof(linha), file)) {
+        // Removendo o caractere de nova linha, se existir
+        linha[strcspn(linha, "\n")] = 0;
+
+        // Separando os campos da linha em login e senha
+        char *file_login = strtok(linha, ",");
+        char *file_senha = strtok(NULL, ",");
+
+        // Removendo espaços em branco no início e no final
+        if (file_login) {
+            while (*file_login == ' ') file_login++;
+            char *end = file_login + strlen(file_login) - 1;
+            while (end > file_login && *end == ' ') end--;
+            *(end + 1) = '\0';
+        }
+
+        if (file_senha) {
+            while (*file_senha == ' ') file_senha++;
+            char *end = file_senha + strlen(file_senha) - 1;
+            while (end > file_senha && *end == ' ') end--;
+            *(end + 1) = '\0';
+        }
+
+        strlen(file_login) > 1 ? strcpy(login, file_login) : strcpy(login, NULL);
+        strlen(file_senha) > 1 ? strcpy(senha, file_senha) : strcpy(senha, NULL);
+    }
+
+    fclose(file);
+}
+
+
+char lembrar_login_cond(char *filename)
+{
+    // pegar int no arquivo .lembrar_login
+
+    FILE *file = fopen(filename, "r");
+
+    if (!file) {
+        perror("Erro ao abrir o arquivo");
+        return 2;
+    }
+
+    char cond;  // arquivo so contem 1 char
+
+    if (fscanf(file, "%c", &cond) == 1) {
+        fclose(file);
+        return cond - '0';
+    }
+
+    fclose(file);
+    return 3;
+
+    
+
+}
