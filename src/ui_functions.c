@@ -119,7 +119,7 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
 
     // se login e senha forem diferentes de "" -> chamar autenticar_usuario
     if (strcmp(login, "") != 0 && strcmp(senha, "") != 0) {
-        autenticado = autenticar_usuario("../data/login.csv", login, senha);
+        autenticado = autenticar_usuario("../data/.login.csv", login, senha);
         if (autenticado == 0) {
             exibir_mensagem(builder, "Usuário autenticado com sucesso");
         } else if (autenticado == 1) {
@@ -195,7 +195,7 @@ void on_botao_cadastrar_usuario_clicked(GtkButton *b, gpointer user_data) {
 
     if (strcmp(login, "") != 0 && strcmp(senha, "") != 0 && strcmp(confirmar_senha, "") != 0) {
         if (strcmp(senha, confirmar_senha) == 0) {
-            int cadastrado = cadastrar_usuario("../data/login.csv", login, senha);
+            int cadastrado = cadastrar_usuario("../data/.login.csv", login, senha);
             if (cadastrado == 0) {
                 exibir_mensagem(builder, "Usuário cadastrado com sucesso");
                 gtk_stack_set_visible_child_name(stack, "box_login");  // voltar para tela de login
