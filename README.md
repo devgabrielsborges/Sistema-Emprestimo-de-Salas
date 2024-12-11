@@ -29,3 +29,9 @@ Este projeto é um sistema de empréstimo de salas desenvolvido em C utilizando 
 
 ```sh
 cd src && gcc -o Sistema-Emprestimo-de-Salas *.c `pkg-config --cflags --libs gtk+-3.0`
+```
+### Executando
+
+```sh
+./Sistema-Emprestimo-de-Salas
+```
