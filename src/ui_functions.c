@@ -1,9 +1,24 @@
 #include <gtk/gtk.h>
-#include "ui_functions.h"
 #include "csv_operations.h"
 
 
 int autenticado = 0;
+
+
+void on_lembrar_login_toggled(GtkToggleButton *toggle)
+{
+    // escrever status no arquivo
+    FILE *arquivo = fopen("../data/.lembrar_login.txt", "w");
+
+    if (!arquivo) {
+        g_critical("Falha ao abrir o arquivo .lembrar_login.txt");
+        return;
+    }
+
+    gtk_toggle_button_get_active(toggle) ? fprintf(arquivo, "1") : fprintf(arquivo, "0");
+
+    fclose(arquivo);
+}
 
 void exibir_mensagem(GtkBuilder *builder, const char *mensagem) {
     // Obtém o GtkMessageDialog do arquivo Glade
@@ -74,8 +89,6 @@ void popular_lista_reservas(GtkBuilder *builder, const char *bloco, char *sala, 
             gtk_style_context_add_class(context, "label-lista");
             
             gtk_list_box_insert(lista, label, -1);
-        } else {
-            printf("Reserva inválida na posição %d\n", i);
         }
     }
 
@@ -107,7 +120,6 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
     // se login e senha forem diferentes de "" -> chamar autenticar_usuario
     if (strcmp(login, "") != 0 && strcmp(senha, "") != 0) {
         autenticado = autenticar_usuario("../data/login.csv", login, senha);
-        printf("Autenticado: %d\n", autenticado);
         if (autenticado == 0) {
             exibir_mensagem(builder, "Usuário autenticado com sucesso");
         } else if (autenticado == 1) {
@@ -127,6 +139,11 @@ void on_botao_login_clicked(GtkButton *b, gpointer user_data) {
             return;
         }
 
+        // se o toggle ativo -> salvar login e senha no arquivo .ultimo_login.csv
+        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "toggle_lembrar_login"))) == TRUE)
+        {
+            escrever_ultimo_login("../data/.ultimo_login.txt", login, senha);
+        }
         
         char data_atual[TAM_DATA];
         pegar_data_atual(data_atual);

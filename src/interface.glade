@@ -77,13 +77,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkCheckButton" id="lembrar">
+              <object class="GtkCheckButton" id="toggle_lembrar_login">
                 <property name="label" translatable="yes">Lembrar de mim</property>
+                <property name="name">toggle_lembrar_login</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
                 <property name="draw-indicator">True</property>
-                <signal name="toggled" handler="on_lembrar_toggled" swapped="no"/>
+                <signal name="toggled" handler="on_lembrar_login_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

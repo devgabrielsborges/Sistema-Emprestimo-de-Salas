@@ -13,15 +13,6 @@
 
 extern char *horarios[];
 
-typedef struct Registro_aula{
-    char sala[MAX_TAM_SALA];
-    char data[TAM_DATA];
-    char professor[MAX_TAM_INFO];
-    char disciplina[MAX_TAM_INFO];
-    char turma[MAX_TAM_INFO];
-    char horario_inicio[TAM_HORARIO];
-    char horario_fim[TAM_HORARIO];
-} registro_aula;
 
 void pegar_data_atual(char *data);
 
@@ -44,5 +35,10 @@ void liberar_reservas(char *reservas[19]);
 int cadastrar_usuario(const char *filename, const char login[20], const char senha[40]);
 
 int autenticar_usuario(const char *filename, const char *login, const char *senha);
+
+void escrever_ultimo_login(const char *filename, const char *login, const char *senha);
+void ler_ultimo_login(const char *filename, char *login, char *senha);
+
+char lembrar_login_cond(char *filename);
 
 #endif // CSV_OPERATIONS_H
