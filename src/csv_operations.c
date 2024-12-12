@@ -180,7 +180,6 @@ void carregar_reservas(const char *filename, char *reservas[NUM_HORARIOS], char 
         // Para separar os campos na linha por virgula
         if (sscanf(linha, "%19[^,],%19[^,],%19[^,],%29[^,],%4[^,],%19[^,],%19[^,\n]",
                    arquivo_sala, arquivo_data, professor, disciplina, turma, horario_inicio, horario_fim) == 7) {
-            printf("linha: %s\n", linha);
             // Remover espaços em branco e novas linhas
             trim(arquivo_sala);
             trim(arquivo_data);
@@ -190,15 +189,8 @@ void carregar_reservas(const char *filename, char *reservas[NUM_HORARIOS], char 
                 indice_horario_inicio = pegar_indice_horario(horario_inicio);
                 indice_horario_fim = pegar_indice_horario(horario_fim);
 
-                printf("horario valido\n");
-                printf("indice horario inicio -> %d\n", indice_horario_inicio);
-                printf("indice horario fim -> %d\n", indice_horario_fim);
-
-                
-
                 // Verificar se os índices são válidos
                 if (indice_horario_inicio == -1 || indice_horario_fim == -1) {
-                    printf("erro horario\n");
                     continue;
                 }
 
@@ -206,14 +198,11 @@ void carregar_reservas(const char *filename, char *reservas[NUM_HORARIOS], char 
                 for (int i = indice_horario_inicio; i < indice_horario_fim; i++) {
                     reservas[i] = malloc(TAM_LINHA * sizeof(char));
                     if (reservas[i] == NULL) {
-                        printf("erro mem\n");
                         perror("Erro ao alocar memória");
                         fclose(file);
                         return;
                     }
-                    printf("here\n");
                     snprintf(reservas[i],TAM_LINHA * sizeof(reservas[i]), "%s - %s - %s - %s", horarios[i], professor, disciplina, turma);
-                    printf("reserva->%s", reservas[i]);
                 }
             }
         }

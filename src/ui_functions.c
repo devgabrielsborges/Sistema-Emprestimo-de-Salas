@@ -72,7 +72,6 @@ void popular_lista_reservas(GtkBuilder *builder, const char *bloco, char *sala, 
     pegar_nome_arquivo(nome_arquivo, bloco);
     carregar_reservas(nome_arquivo, reservas, sala, data);
 
-    printf("nome_arquivo->%s\n", nome_arquivo);
 
     GtkListBox *lista = GTK_LIST_BOX(gtk_builder_get_object(builder, "lista_reservas"));
     if (!lista) {
