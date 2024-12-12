@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este projeto é um sistema de empréstimo de salas desenvolvido em C utilizando a biblioteca GTK para a interface gráfica. O sistema permite que usuários façam login, cadastrem novos usuários e reservem salas para datas específicas.
+Este projeto é um sistema de empréstimo de salas desenvolvido em C utilizando a biblioteca GTK para a interface gráfica. O sistema permite que usuários façam login, cadastrem novos usuários e reservem salas para datas específicas. Foi desenvolvido para ser utilizado pelos servidores e funcionários da *Universidade de Pernambuco (UPE)*
 
 ## Estrutura do Projeto
 
