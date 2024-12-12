@@ -72,6 +72,7 @@ void popular_lista_reservas(GtkBuilder *builder, const char *bloco, char *sala, 
     pegar_nome_arquivo(nome_arquivo, bloco);
     carregar_reservas(nome_arquivo, reservas, sala, data);
 
+
     GtkListBox *lista = GTK_LIST_BOX(gtk_builder_get_object(builder, "lista_reservas"));
     if (!lista) {
         g_critical("Falha ao obter a lista");

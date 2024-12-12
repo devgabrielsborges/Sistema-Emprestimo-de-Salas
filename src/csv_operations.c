@@ -194,6 +194,7 @@ void carregar_reservas(const char *filename, char *reservas[NUM_HORARIOS], char 
                     continue;
                 }
 
+
                 for (int i = indice_horario_inicio; i < indice_horario_fim; i++) {
                     reservas[i] = malloc(TAM_LINHA * sizeof(char));
                     if (reservas[i] == NULL) {
