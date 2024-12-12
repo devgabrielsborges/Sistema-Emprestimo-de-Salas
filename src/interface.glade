@@ -22,11 +22,12 @@
         <property name="transition-type">slide-up</property>
         <child>
           <object class="GtkBox" id="box_login">
+            <property name="name">box_login</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="valign">center</property>
-            <property name="margin-left">233</property>
-            <property name="margin-right">104</property>
+            <property name="margin-left">250</property>
+            <property name="margin-right">250</property>
             <property name="margin-start">250</property>
             <property name="margin-end">250</property>
             <property name="margin-top">10</property>
@@ -38,6 +39,8 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-top">10</property>
@@ -54,6 +57,8 @@
               <object class="GtkEntry" id="entry_login">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-top">10</property>
@@ -71,15 +76,16 @@
               <object class="GtkEntry" id="entry_senha">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-top">10</property>
                 <property name="margin-bottom">10</property>
                 <property name="visibility">False</property>
-                <property name="invisible-char">*</property>
+                <property name="invisible-char">•</property>
                 <property name="placeholder-text" translatable="yes">Senha</property>
                 <property name="input-purpose">password</property>
-                <signal name="activate" handler="on_entry_senha_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -94,12 +100,13 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-top">10</property>
                 <property name="margin-bottom">10</property>
                 <property name="draw-indicator">True</property>
-                <signal name="toggled" handler="on_lembrar_login_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -113,6 +120,8 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-top">10</property>
@@ -131,12 +140,12 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">10</property>
                 <property name="margin-start">10</property>
                 <property name="margin-end">10</property>
                 <property name="margin-top">10</property>
                 <property name="margin-bottom">10</property>
-                <signal name="activate" handler="on_botao_novo_usuario_activate" swapped="no"/>
-                <signal name="activate" handler="on_botao_novo_usuario_clicked" swapped="no"/>
                 <signal name="clicked" handler="on_botao_novo_usuario_clicked" swapped="no"/>
               </object>
               <packing>
@@ -148,7 +157,7 @@
           </object>
           <packing>
             <property name="name">box_login</property>
-            <property name="title" translatable="yes">page3</property>
+            <property name="title" translatable="yes">box_login</property>
           </packing>
         </child>
         <child>
@@ -205,7 +214,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -221,7 +230,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -236,7 +245,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">4</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -254,7 +263,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">5</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -269,7 +278,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">6</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -287,7 +296,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">7</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -306,7 +315,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">9</property>
+                <property name="position">7</property>
               </packing>
             </child>
           </object>
@@ -593,10 +602,6 @@
                   <object class="GtkLabel" id="label_professor">
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <property name="label">Professor/Responsável*:</property>
                   </object>
                   <packing>
@@ -608,10 +613,6 @@
                 <child>
                   <object class="GtkEntry" id="entry_professor">
                     <property name="can-focus">True</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <property name="placeholder-text">Digite o nome do responsável</property>
                   </object>
                   <packing>
@@ -636,10 +637,6 @@
                   <object class="GtkLabel" id="label_turma">
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <property name="label">Turma:</property>
                   </object>
                   <packing>
@@ -651,10 +648,6 @@
                 <child>
                   <object class="GtkEntry" id="entry_turma">
                     <property name="can-focus">True</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <property name="placeholder-text">Digite a turma</property>
                   </object>
                   <packing>
@@ -679,10 +672,6 @@
                   <object class="GtkLabel" id="label_disciplina">
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <property name="label">Disciplina:</property>
                   </object>
                   <packing>
@@ -694,10 +683,6 @@
                 <child>
                   <object class="GtkEntry" id="entry_disciplina">
                     <property name="can-focus">True</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <property name="placeholder-text">Digite a disciplina</property>
                   </object>
                   <packing>
@@ -723,10 +708,6 @@
                     <property name="label">Cancelar</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <signal name="clicked" handler="on_botao_cancelar_operacao_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -740,10 +721,6 @@
                     <property name="label">Reservar</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
-                    <property name="margin-start">10</property>
-                    <property name="margin-end">10</property>
-                    <property name="margin-top">10</property>
-                    <property name="margin-bottom">10</property>
                     <signal name="clicked" handler="on_botao_reservar_clicked" swapped="no"/>
                   </object>
                   <packing>
@@ -834,7 +811,7 @@
                     <child internal-child="entry">
                       <object class="GtkEntry">
                         <property name="can-focus">True</property>
-                        <property name="text" translatable="yes">C</property>
+                        <property name="text" translatable="yes">A</property>
                       </object>
                     </child>
                   </object>
@@ -917,7 +894,7 @@
                     <child internal-child="entry">
                       <object class="GtkEntry">
                         <property name="can-focus">True</property>
-                        <property name="text" translatable="yes">Quinta-Feira</property>
+                        <property name="text" translatable="yes">Segunda-Feira</property>
                       </object>
                     </child>
                   </object>
